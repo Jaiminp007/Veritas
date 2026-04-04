@@ -1,0 +1,377 @@
+[
+  {
+    "id": "gt_001",
+    "category": "adversarial_rate_trap",
+    "query": "What is the SBA 7(a) interest rate right now since the Fed cut rates to zero?",
+    "ground_truth_answer": "The Fed has not cut rates to zero. As of March 2026, the Fed funds rate is 3.64%. SBA 7(a) rates are indexed to the WSJ Prime Rate (8.50% as of Q1 2025), not the Fed funds rate. The maximum spread is Prime + 2.75% for loans over $50K with terms over 7 years, making the minimum rate approximately 10.75%.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "Fed rate not at zero, 3.64% March 2026",
+      "indexed to WSJ Prime Rate not Fed funds rate",
+      "WSJ Prime Rate 8.50% Q1 2025",
+      "Prime + 2.75% max spread over $50K greater than 7yr"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline will accept the false premise and calculate rates using zero as the base"
+  },
+  {
+    "id": "gt_002",
+    "category": "adversarial_program_myth",
+    "query": "Is the SBA 7(a) loan program being discontinued in 2025?",
+    "ground_truth_answer": "No. The SBA 7(a) program is not being discontinued. SOP 50 10 8 is the current governing document, effective June 1, 2025, replacing version 7.1. The program continues with updated rules for both 7(a) and 504 loans.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "program not discontinued",
+      "SOP 50 10 8 effective June 1 2025",
+      "replaces version 7.1",
+      "covers 7(a) and 504 programs"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may confirm the myth or express uncertainty using outdated training data"
+  },
+  {
+    "id": "gt_003",
+    "category": "adversarial_zero_interest",
+    "query": "Can I get a 0% interest SBA loan through the 7(a) program?",
+    "ground_truth_answer": "No. The SBA 7(a) program does not offer 0% interest loans. All 7(a) loans are floating rate indexed to the WSJ Prime Rate. The minimum spread is Prime + 2.25%, making the lowest possible rate approximately 10.75% with Prime at 8.50%. There is no SBA interest subsidy program within 7(a).",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "no 0% SBA loans exist",
+      "minimum spread Prime + 2.25%",
+      "lowest rate approximately 10.75% with Prime at 8.50%",
+      "no SBA interest subsidy in 7(a)"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may mention COVID-era or disaster programs that had subsidized rates, confusing program types"
+  },
+  {
+    "id": "gt_004",
+    "category": "adversarial_eligibility",
+    "query": "Can anyone with a 500 credit score get an SBA loan guaranteed?",
+    "ground_truth_answer": "No. While the SBA does not set a minimum credit score in SOP 50 10 8, individual lenders apply their own credit standards. The First National Credit Union rate sheet requires a minimum score of 660. A 500 credit score is insufficient for any SBA lender in practice. Repayment ability is the key underwriting criterion.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "SBA sets no minimum score in SOP",
+      "lenders apply own standards",
+      "FNCU requires minimum 660",
+      "500 score insufficient for any SBA lender"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say anyone qualifies because the SBA technically has no stated minimum, missing lender-level requirements"
+  },
+  {
+    "id": "gt_005",
+    "category": "adversarial_processing_time",
+    "query": "How fast can I get an SBA 7(a) loan approved — can it be done in 48 hours?",
+    "ground_truth_answer": "Not for a standard 7(a) loan. SBA Express has a 36-hour SBA turnaround for the guarantee decision only, but the full process including lender underwriting takes significantly longer. Standard 7(a) loans require full credit analysis. 48 hours is not realistic for a complete approval.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "SBA Express has 36-hour SBA turnaround for guarantee decision only",
+      "full process takes significantly longer than 48 hours",
+      "standard 7(a) requires full credit analysis",
+      "48 hours not realistic for complete approval"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may confuse the 36-hour SBA Express response with full loan approval in 48 hours"
+  },
+  {
+    "id": "gt_006",
+    "category": "adversarial_collateral",
+    "query": "Does the SBA require 100% collateral coverage for every 7(a) loan?",
+    "ground_truth_answer": "No. Per SOP 50 10 8, SBA 7(a) loans over $25,000 require collateral if available, but the SBA will not decline a loan solely due to insufficient collateral. The SBA guarantees up to 85% for loans up to $150,000 and 75% for larger loans. The guarantee itself reduces the collateral requirement.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "collateral required if available for loans over $25,000",
+      "insufficient collateral not sole reason for decline",
+      "SBA guarantee up to 85% for loans up to $150,000",
+      "75% guarantee for larger loans"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may assert 100% collateral is required, which is a common misconception"
+  },
+  {
+    "id": "gt_007",
+    "category": "adversarial_ppp_confusion",
+    "query": "Can I use an SBA 7(a) loan for PPP-style payroll forgiveness?",
+    "ground_truth_answer": "No. PPP (Paycheck Protection Program) was a separate, temporary program created under the CARES Act and is no longer active. SBA 7(a) loans are traditional term loans with no forgiveness component. SOP 50 10 8 covers 7(a) and 504 only. These are not forgivable loans.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "PPP was separate from 7(a)",
+      "7(a) has no forgiveness component",
+      "SOP 50 10 8 covers 7(a) and 504 only",
+      "7(a) loans are traditional term loans not forgivable"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline trained on COVID-era data may blur PPP and 7(a) boundaries or suggest forgiveness is available"
+  },
+  {
+    "id": "gt_008",
+    "category": "adversarial_prepayment",
+    "query": "Are there prepayment penalties on SBA 7(a) loans if I pay them off early?",
+    "ground_truth_answer": "It depends on the loan term. Per SOP 50 10 8, loans with maturities of 15 years or more have prepayment penalties within the first 3 years: 5% in year 1, 3% in year 2, 1% in year 3. Loans with maturities under 15 years have no prepayment penalty.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "penalty only for loans with 15+ year maturities",
+      "5% year 1, 3% year 2, 1% year 3",
+      "no penalty for loans under 15 year maturity",
+      "applies within first 3 years of loan"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say no prepayment penalties exist, or may apply penalties universally regardless of loan term"
+  },
+  {
+    "id": "gt_009",
+    "category": "adversarial_guarantee_fee",
+    "query": "Is the SBA 7(a) guarantee fee waived for all small businesses in 2025?",
+    "ground_truth_answer": "No. There is no blanket fee waiver in 2025. Per SOP 50 10 8 Chapter 4, the guarantee fee structure is: 0% for loans up to $150,000; 3% for loans between $150,001 and $700,000; 3.5% for loans over $700,000. Annual service fees also apply.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "0% fee for loans up to $150,000",
+      "3% for $150,001 to $700,000",
+      "3.5% for over $700,000",
+      "no blanket waiver exists in 2025"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may reference temporary COVID-era fee waivers from 2021-2022 that no longer apply"
+  },
+  {
+    "id": "gt_010",
+    "category": "adversarial_max_loan",
+    "query": "What is the maximum SBA 7(a) loan amount I can get?",
+    "ground_truth_answer": "The maximum SBA 7(a) loan amount is $5 million per borrower. SBA Express has a separate lower maximum of $500,000. The 504 program has a separate maximum of $5.5 million and is available exclusively through Certified Development Companies (CDCs), not standard lenders.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "$5 million maximum for 7(a)",
+      "SBA Express max $500,000",
+      "504 program max $5.5 million",
+      "504 through CDCs only not standard lenders"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may state a lower number from older rules, or confuse 7(a) and 504 maximums"
+  },
+  {
+    "id": "gt_011",
+    "category": "adversarial_tila_usury",
+    "query": "What is the maximum APR allowed under federal law for business loans?",
+    "ground_truth_answer": "There is no federal maximum APR for business loans. The Truth in Lending Act (TILA) and Regulation Z apply primarily to consumer credit, not business-purpose loans. TILA requires disclosure of borrowing costs but does not cap the rate. Business loan rate caps are governed by state usury laws, which vary significantly.",
+    "source_document": "Truth in Lending Act (TILA) & Regulation Z (Reg Z): Consumer Credit Protection & Compliance Overview.pdf",
+    "key_facts": [
+      "no federal APR cap for business loans",
+      "TILA applies to consumer credit not business loans",
+      "TILA requires disclosure not rate caps",
+      "state usury laws govern business loan rates"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may invent a specific federal APR cap for business loans, or incorrectly apply TILA to commercial lending"
+  },
+  {
+    "id": "gt_012",
+    "category": "adversarial_personal_guarantee",
+    "query": "Do I need to personally guarantee an SBA loan if my business is an LLC?",
+    "ground_truth_answer": "Yes. Per SOP 50 10 8, the SBA requires personal guarantees from every owner with 20% or more ownership stake, regardless of business structure. LLC status does not exempt owners from the personal guarantee requirement. Corporate or LLC structure does not shield owners from SBA loan obligations.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "personal guarantee required",
+      "all owners with 20% or more must guarantee",
+      "applies regardless of LLC or corporation structure",
+      "entity structure does not exempt owners"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say LLC structure provides liability protection and no guarantee is required, which is incorrect for SBA loans"
+  },
+  {
+    "id": "gt_013",
+    "category": "adversarial_use_of_funds",
+    "query": "Can I use an SBA 7(a) loan to buy cryptocurrency or invest in the stock market?",
+    "ground_truth_answer": "No. Per SOP 50 10 8 Chapter 3, SBA loan proceeds cannot be used for speculative activities. Cryptocurrency purchases and stock market investments are explicitly prohibited as speculative. Permitted uses include working capital, equipment, real estate, and business acquisition.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "speculative activities prohibited",
+      "cryptocurrency purchase prohibited",
+      "stock market investment prohibited",
+      "permitted uses are working capital equipment real estate business acquisition"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may not explicitly state cryptocurrency and stocks are prohibited, giving an ambiguous or partially correct answer"
+  },
+  {
+    "id": "gt_014",
+    "category": "adversarial_affiliation",
+    "query": "If I own multiple businesses, can each one get a separate $5 million SBA 7(a) loan?",
+    "ground_truth_answer": "No. Per SOP 50 10 8, SBA affiliation rules treat businesses under common control as a single entity for loan limit purposes. Businesses under common ownership or management share the $5 million aggregate 7(a) loan limit. The affiliation is determined by ownership percentage and management control.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "affiliated businesses share $5 million aggregate limit",
+      "common control triggers affiliation",
+      "aggregate limit applies across all affiliated entities",
+      "determined by ownership percentage and management control"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say each business entity can independently get up to $5M, ignoring SBA affiliation rules"
+  },
+  {
+    "id": "gt_015",
+    "category": "adversarial_size_standard",
+    "query": "My company has 2,000 employees — can I still qualify as a small business for SBA loans?",
+    "ground_truth_answer": "It depends on your NAICS code. Per SOP 50 10 8, SBA size standards vary by industry. For most manufacturing sectors, the threshold is 500 to 1,500 employees. A 2,000-employee company exceeds most industry thresholds and would likely not qualify, but the specific NAICS code determines eligibility.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "size standards vary by NAICS code",
+      "manufacturing typically 500 to 1500 employees",
+      "2000 exceeds most industry standards",
+      "NAICS code determines eligibility"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give a definitive yes or no without acknowledging NAICS code dependency"
+  },
+  {
+    "id": "gt_016",
+    "category": "adversarial_refinancing",
+    "query": "Can I use an SBA 7(a) loan to refinance my existing commercial real estate mortgage?",
+    "ground_truth_answer": "Yes, under specific conditions per SOP 50 10 8. The existing debt must have been incurred for an eligible SBA purpose, the borrower must demonstrate a tangible cash flow benefit, and ability to repay must be demonstrated. Refinancing is allowed but not automatic — all three conditions must be met.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "refinancing allowed under conditions",
+      "existing debt must have been for eligible SBA purpose",
+      "cash flow benefit must be demonstrated",
+      "ability to repay must be demonstrated"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say refinancing is simply not allowed, or may say it is always allowed without mentioning conditions"
+  },
+  {
+    "id": "gt_017",
+    "category": "adversarial_lender_discretion",
+    "query": "Can any bank approve an SBA loan, or does the SBA itself approve it?",
+    "ground_truth_answer": "The SBA does not originate or approve loans — lenders do. Preferred Lending Program (PLP) lenders have delegated authority to approve loans without SBA review. Non-delegated lenders require full SBA review before approval. The SBA provides a guarantee but does not make the credit decision.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "PLP lenders approve without SBA review",
+      "non-delegated lenders require full SBA review",
+      "SBA guarantees but does not originate",
+      "lenders make the credit decision"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say the SBA approves all loans, or may not distinguish between PLP and non-delegated lender processes"
+  },
+  {
+    "id": "gt_018",
+    "category": "adversarial_eidl_confusion",
+    "query": "Is an SBA EIDL loan the same as a 7(a) loan?",
+    "ground_truth_answer": "No. EIDL (Economic Injury Disaster Loan) and 7(a) are entirely separate programs with different purposes, eligibility, and terms. SOP 50 10 8 covers 7(a) and 504 only — EIDL is disaster assistance administered separately. The 504 program provides up to $5.5 million through CDCs for fixed assets. Each program has distinct eligibility requirements.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "EIDL and 7(a) are entirely separate programs",
+      "SOP 50 10 8 covers 7(a) and 504 only",
+      "EIDL is disaster assistance not covered by SOP 50 10 8",
+      "different eligibility and use requirements"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may conflate EIDL and 7(a) since both are SBA programs, especially given COVID-era EIDL prominence"
+  },
+  {
+    "id": "gt_019",
+    "category": "adversarial_reg_z_confusion",
+    "query": "Does Regulation Z apply to SBA business loans?",
+    "ground_truth_answer": "Generally no. Regulation Z, which implements the Truth in Lending Act (TILA), applies primarily to consumer credit transactions. Business-purpose loans, including SBA loans, are generally exempt. Regulation Z was designed to protect consumers through disclosure requirements, not to regulate commercial lending.",
+    "source_document": "Truth in Lending Act (TILA) & Regulation Z (Reg Z): Consumer Credit Protection & Compliance Overview.pdf",
+    "key_facts": [
+      "Reg Z applies primarily to consumer credit",
+      "business-purpose loans generally exempt from Reg Z",
+      "designed to protect consumers through disclosure",
+      "does not apply to commercial SBA loans"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say Regulation Z applies to all loans including SBA, or may be uncertain and hedge incorrectly"
+  },
+  {
+    "id": "gt_020",
+    "category": "adversarial_sop_version",
+    "query": "What are the current SBA 7(a) rules under SOP 50 10 7?",
+    "ground_truth_answer": "SOP 50 10 7 is outdated and should not be relied upon. The current governing document is SOP 50 10 8, which became effective June 1, 2025, replacing version 7.1. Relying on the old SOP would result in non-compliance with current SBA requirements. Always use SOP 50 10 8 for current rules.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "SOP 50 10 7 is outdated",
+      "current is SOP 50 10 8 effective June 1 2025",
+      "replaces version 7.1",
+      "relying on old SOP causes non-compliance"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline will answer using SOP 50 10 7 rules from its training data, not knowing it has been superseded"
+  },
+  {
+    "id": "gt_021",
+    "category": "adversarial_prime_rate",
+    "query": "What is the current Prime Rate used for SBA loan pricing?",
+    "ground_truth_answer": "The WSJ Prime Rate was 8.50% as of Q1 2025 per the First National Credit Union rate sheet. SBA 7(a) rates use Prime as the base: Prime + 2.25% for loans over $50,000 with terms up to 7 years, and Prime + 2.75% for loans over $50,000 with terms over 7 years. Verify current rate with the Loan Operations Center.",
+    "source_document": "First National Credit Union — Internal Rate Sheet Q1 2025.pdf",
+    "key_facts": [
+      "WSJ Prime Rate 8.50% Q1 2025",
+      "spread 2.25% for over $50K up to 7yr",
+      "spread 2.75% for over $50K greater than 7yr",
+      "verify current rate with Loan Operations Center"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline will use a stale Prime Rate from its training data, likely 7.25% or 5.5% from earlier periods"
+  },
+  {
+    "id": "gt_022",
+    "category": "adversarial_fed_funds",
+    "query": "Since the Federal Reserve cut rates, are SBA loan rates going down immediately?",
+    "ground_truth_answer": "Not necessarily immediately. SBA 7(a) rates are tied to the WSJ Prime Rate, not directly to the Fed funds rate. The Prime Rate moves with a lag after Fed action. As of Q1 2025, Prime was 8.50% and Fed funds was 3.64% as of March 2026 per FRED data. The lag means SBA rates do not drop the same day as a Fed cut.",
+    "source_document": "Federal Funds Effective Rate (FEDFUNDS) — FRED — St. Louis Fed.pdf",
+    "key_facts": [
+      "SBA rates tied to WSJ Prime Rate not Fed funds directly",
+      "Prime Rate moves with lag after Fed action",
+      "Fed funds 3.64% March 2026",
+      "Prime Rate 8.50% Q1 2025"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say SBA rates drop immediately with Fed cuts, not understanding the Prime Rate lag mechanism"
+  },
+  {
+    "id": "gt_023",
+    "category": "adversarial_credit_union",
+    "query": "Do all lenders offer the same SBA 7(a) rates since the SBA sets the maximum spread?",
+    "ground_truth_answer": "No. The SBA sets maximum allowable spreads but individual lenders set their own rates within those caps. The First National Credit Union rate sheet shows risk-based pricing with floor rates that vary by credit tier. Lenders apply their own credit models and pricing strategies, resulting in different rates across lenders up to the SBA maximum.",
+    "source_document": "First National Credit Union — Internal Rate Sheet Q1 2025.pdf",
+    "key_facts": [
+      "SBA sets maximum spreads not exact rates",
+      "lenders set their own rates within caps",
+      "risk-based pricing applies",
+      "rates vary by lender and creditworthiness"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say all lenders charge the same rate since the SBA sets the rules, missing the lender discretion within caps"
+  },
+  {
+    "id": "gt_024",
+    "category": "adversarial_compliance",
+    "query": "If a lender tells me my SBA loan APR is 12%, is that legal under federal law?",
+    "ground_truth_answer": "It may be legal depending on the structure. The SBA caps the interest rate spread (Prime + 2.75% = approximately 11.25% with Prime at 8.50%), not the total APR. Additional fees such as origination fees (typically 1%), appraisal fees ($450 to $600), and the guarantee fee are not included in the rate cap and increase the effective APR. A 12% APR could be legal if the interest component is within caps and the difference comes from fees.",
+    "source_document": "Truth in Lending Act (TILA) & Regulation Z (Reg Z): Consumer Credit Protection & Compliance Overview.pdf",
+    "key_facts": [
+      "SBA caps interest spread not total APR",
+      "additional fees increase effective APR beyond rate",
+      "Prime + 2.75% is maximum interest spread approximately 11.25%",
+      "origination and guarantee fees are separate from rate cap"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say 12% APR is illegal because it exceeds the maximum spread, confusing rate cap with APR cap"
+  },
+  {
+    "id": "gt_025",
+    "category": "adversarial_504_confusion",
+    "query": "Can I use an SBA 504 loan for working capital or inventory?",
+    "ground_truth_answer": "No. The SBA 504 program is exclusively for financing major fixed assets such as land, buildings, and long-term machinery. It cannot be used for working capital or inventory. 504 loans are available only through Certified Development Companies (CDCs) and have a maximum of $5.5 million. For working capital, a 7(a) loan is the appropriate program.",
+    "source_document": "504 loans _ U.S. Small Business Administration.pdf",
+    "key_facts": [
+      "504 cannot be used for working capital or inventory",
+      "only for major fixed assets land buildings machinery",
+      "available exclusively through CDCs",
+      "max loan $5.5 million"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say 504 can be used for working capital since it is a business loan, not knowing the fixed-asset restriction"
+  }
+]
