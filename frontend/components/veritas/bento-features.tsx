@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, CheckCircle2, Database, Cpu, DollarSign } from "lucide-react"
+import { ArrowRight, CheckCircle2, Database, Cpu } from "lucide-react"
 import { CategoryMetrics, SummaryMetrics } from "@/lib/convex-data"
 
 type BentoFeaturesProps = {
@@ -153,42 +153,7 @@ export function BentoFeatures({ categories, summary }: BentoFeaturesProps) {
             </div>
           </div>
 
-          {/* Card 3: Small - API Credits */}
-          <div className="glass rounded-2xl p-6 border border-border hover:border-orange/30 transition-all duration-300 hover:scale-[1.01]">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="p-2 rounded-lg bg-orange/10">
-                <DollarSign className="h-5 w-5 text-orange" />
-              </div>
-              <h3 className="font-display text-lg font-semibold text-foreground">
-                API Credits
-              </h3>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-end gap-1">
-                <span className="font-display text-3xl font-bold text-orange">
-                  {summary?.total ?? 0}
-                </span>
-                <span className="text-sm text-muted-foreground mb-1">
-                  total records
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-orange to-emerald rounded-full"
-                    style={{ width: `${Math.min(100, Math.max(5, Math.round(citationAccuracy * 100)))}%` }}
-                  />
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Coverage score from latest completed run
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 4: Small - System Architecture */}
+          {/* Card 3: Small - System Architecture */}
           <div className="glass rounded-2xl p-6 border border-border hover:border-cyan/30 transition-all duration-300 hover:scale-[1.01]">
             <div className="flex items-center gap-2 mb-4">
               <div className="p-2 rounded-lg bg-cyan/10">

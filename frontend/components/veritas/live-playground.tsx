@@ -207,7 +207,7 @@ export function LivePlayground() {
         </div>
 
         <p className="text-xs text-foreground font-mono text-center mb-8 mt-2">
-          pls dont request so many tokens, i dont have tokens :)
+          runs on vibes and a free tier — don't go crazy :)
         </p>
 
         {/* Error State */}

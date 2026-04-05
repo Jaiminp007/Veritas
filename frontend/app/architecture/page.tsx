@@ -1,17 +1,17 @@
 import { Header } from "@/components/veritas/header"
 import { Footer } from "@/components/veritas/footer"
-import { Database, Cpu, Network, Shield, Zap, Layers } from "lucide-react"
+import { Database, Cpu, Network, Shield, Zap, Layers, FlaskConical, Scale } from "lucide-react"
 
 export const metadata = {
   title: "Architecture | Veritas Benchmark",
-  description: "Technical architecture and system design of the Veritas benchmark platform.",
+  description: "Technical architecture, scoring methodology, and system design of the Veritas benchmark platform.",
 }
 
 export default function ArchitecturePage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      
+
       {/* Page Header */}
       <section className="pt-32 pb-12 px-6">
         <div className="max-w-5xl mx-auto text-center">
@@ -36,11 +36,12 @@ export default function ArchitecturePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,oklch(0_0_0)_80%)] pointer-events-none" />
         <div className="relative z-10">
           <SystemDiagram />
+          <ScoringMethodology />
           <TechStack />
           <DataFlow />
         </div>
       </div>
-      
+
       <Footer />
     </main>
   )
@@ -136,6 +137,114 @@ function SystemDiagram() {
   )
 }
 
+function ScoringMethodology() {
+  return (
+    <section className="py-16 px-6">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="font-display text-2xl font-bold text-foreground mb-8 text-center">
+          Scoring Methodology
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* NCS Formula */}
+          <div className="glass rounded-2xl p-6 border border-cyan/30">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-2 rounded-lg bg-cyan/10">
+                <Scale className="h-5 w-5 text-cyan" />
+              </div>
+              <h3 className="font-display text-lg font-semibold text-foreground">
+                Narrative Control Score (NCS)
+              </h3>
+            </div>
+            <div className="font-mono text-sm bg-secondary/30 p-4 rounded-lg mb-4 text-center">
+              <span className="text-cyan">NCS</span>
+              <span className="text-muted-foreground"> = </span>
+              <span className="text-emerald">&alpha;</span>
+              <span className="text-muted-foreground"> &middot; citation_match &minus; </span>
+              <span className="text-orange">&beta;</span>
+              <span className="text-muted-foreground"> &middot; hallucination_penalty + </span>
+              <span className="text-cyan">&delta;</span>
+              <span className="text-muted-foreground"> &middot; key_fact_coverage</span>
+            </div>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="flex justify-between">
+                <span><span className="text-emerald font-mono">&alpha;</span> = Citation weight</span>
+                <span className="font-mono text-foreground">0.5</span>
+              </div>
+              <div className="flex justify-between">
+                <span><span className="text-orange font-mono">&beta;</span> = Hallucination penalty weight</span>
+                <span className="font-mono text-foreground">0.8</span>
+              </div>
+              <div className="flex justify-between">
+                <span><span className="text-cyan font-mono">&delta;</span> = Key fact coverage weight</span>
+                <span className="font-mono text-foreground">0.3</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Judge Pipeline */}
+          <div className="glass rounded-2xl p-6 border border-emerald/30">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-2 rounded-lg bg-emerald/10">
+                <FlaskConical className="h-5 w-5 text-emerald" />
+              </div>
+              <h3 className="font-display text-lg font-semibold text-foreground">
+                Judge Pipeline
+              </h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">
+              Each response is evaluated by an independent judge LLM against ground truth key facts, then hardened with rule-based checks.
+            </p>
+            <div className="space-y-2">
+              {[
+                { label: "Negation-aware overlap", desc: "Detects contradictions, not just keyword matches" },
+                { label: "Refusal detection", desc: "Distinguishes honest refusals from lazy non-answers" },
+                { label: "Zero-fact penalty", desc: "Flags confident answers that cover no key facts" },
+                { label: "Numeric validation", desc: "Ensures specific numbers and percentages are present" },
+              ].map((item) => (
+                <div key={item.label} className="flex items-start gap-2 text-sm">
+                  <Shield className="h-4 w-4 text-emerald mt-0.5 shrink-0" />
+                  <div>
+                    <span className="text-foreground font-medium">{item.label}</span>
+                    <span className="text-muted-foreground"> — {item.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Scoring Breakdown */}
+        <div className="glass rounded-2xl p-6 border border-border">
+          <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+            How Scores Are Computed
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6 text-sm">
+            <div>
+              <div className="text-emerald font-semibold mb-2">Citation Match</div>
+              <p className="text-muted-foreground">
+                Token overlap between Senso citations and ground truth key facts. Threshold: 35%. Baseline gets 0 (no citations available).
+              </p>
+            </div>
+            <div>
+              <div className="text-orange font-semibold mb-2">Hallucination Penalty</div>
+              <p className="text-muted-foreground">
+                0.0 (no issue) to 1.0 (severe). Judge LLM evaluates against key facts, then rule-based hardening catches edge cases the LLM misses.
+              </p>
+            </div>
+            <div>
+              <div className="text-cyan font-semibold mb-2">Key Fact Coverage</div>
+              <p className="text-muted-foreground">
+                Fraction of ground truth facts present in the response. Uses negation-aware matching to catch contradictions. Threshold: 45%.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function TechStack() {
   const technologies = [
     {
@@ -145,12 +254,12 @@ function TechStack() {
     },
     {
       category: "Backend",
-      items: ["Node.js", "Senso API", "REST/GraphQL", "WebSockets"],
+      items: ["FastAPI", "Senso API", "GitHub Models (GPT-4o-mini)", "Convex"],
       color: "emerald",
     },
     {
       category: "Infrastructure",
-      items: ["Vercel", "Edge Functions", "CDN", "Analytics"],
+      items: ["Vercel", "Render", "Convex Cloud", "GitHub Actions"],
       color: "orange",
     },
   ]
