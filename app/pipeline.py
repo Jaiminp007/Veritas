@@ -29,12 +29,14 @@ class PipelineManager:
         ollama_client: OllamaClient,
         senso_client: SensoClient,
         runtime_config: RuntimeConfigStore,
+        playground_llm_client: OllamaClient | None = None,
     ) -> None:
         self.settings = load_config(settings_path)
         self.convex_client = convex_client
         self.ollama_client = ollama_client
         self.senso_client = senso_client
         self.runtime_config = runtime_config
+        self.playground_llm_client = playground_llm_client or ollama_client
         self.queue: asyncio.Queue[str] = asyncio.Queue()
         self.jobs: dict[str, PipelineJob] = {}
         self._worker_task: asyncio.Task[None] | None = None
@@ -176,19 +178,21 @@ class PipelineManager:
             senso_response_text = senso_payload.answer
             senso_citations = senso_payload.citations
 
-            baseline_judgment = await judge_response(
-                self.ollama_client,
-                model=self.settings.llm_providers.judge.model,
-                response_text=baseline_response_text,
-                key_facts=entry.key_facts,
-                timeout=self.settings.pipeline.judge_llm_timeout,
-            )
-            senso_judgment = await judge_response(
-                self.ollama_client,
-                model=self.settings.llm_providers.judge.model,
-                response_text=senso_response_text,
-                key_facts=entry.key_facts,
-                timeout=self.settings.pipeline.judge_llm_timeout,
+            baseline_judgment, senso_judgment = await asyncio.gather(
+                judge_response(
+                    self.ollama_client,
+                    model=self.settings.llm_providers.judge.model,
+                    response_text=baseline_response_text,
+                    key_facts=entry.key_facts,
+                    timeout=self.settings.pipeline.judge_llm_timeout,
+                ),
+                judge_response(
+                    self.ollama_client,
+                    model=self.settings.llm_providers.judge.model,
+                    response_text=senso_response_text,
+                    key_facts=entry.key_facts,
+                    timeout=self.settings.pipeline.judge_llm_timeout,
+                ),
             )
         except Exception as exc:
             status = "failed"
@@ -245,6 +249,39 @@ class PipelineManager:
             error_message=error_message,
             created_at=int(time.time() * 1000),
         )
+
+    async def run_playground_query(self, query: str) -> dict:
+        """Run a single ad-hoc query through GitHub Models baseline and Senso API (no judge/NCS)."""
+        started = time.perf_counter()
+        client = self.playground_llm_client
+
+        baseline_task = client.chat(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Answer the financial compliance question directly and concisely from your own knowledge.",
+                },
+                {"role": "user", "content": query},
+            ],
+            temperature=0.0,
+            timeout=self.settings.pipeline.baseline_llm_timeout,
+        )
+        senso_task = self.senso_client.search(query, max_results=3)
+
+        baseline_payload, senso_payload = await asyncio.gather(baseline_task, senso_task)
+
+        baseline_response = client.extract_content(baseline_payload)
+        senso_response = senso_payload.answer
+        senso_citations = senso_payload.citations
+        latency_ms = (time.perf_counter() - started) * 1000.0
+
+        return {
+            "baseline_response": baseline_response,
+            "senso_response": senso_response,
+            "senso_citations": senso_citations,
+            "latency_ms": latency_ms,
+        }
 
     def _failed_judgment(self, reason: str):
         from .models import HallucinationJudgment

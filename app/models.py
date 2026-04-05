@@ -207,3 +207,19 @@ class WeightsUpdate(BaseModel):
     beta: float
     delta: float
 
+
+class PlaygroundRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    query: str = Field(..., min_length=5, max_length=1000)
+
+
+class PlaygroundResponse(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    query: str
+    baseline_response: str
+    senso_response: str
+    senso_citations: list[str] = Field(default_factory=list)
+    latency_ms: float
+

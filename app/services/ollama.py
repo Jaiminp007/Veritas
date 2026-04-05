@@ -8,10 +8,13 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 
 
 class OllamaClient:
-    def __init__(self, base_url: str, timeout: float) -> None:
+    def __init__(self, base_url: str, timeout: float, api_key: str | None = None) -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
-        self._client = httpx.AsyncClient(base_url=self.base_url, timeout=timeout)
+        headers: dict[str, str] = {}
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+        self._client = httpx.AsyncClient(base_url=self.base_url, timeout=timeout, headers=headers)
 
     async def aclose(self) -> None:
         await self._client.aclose()

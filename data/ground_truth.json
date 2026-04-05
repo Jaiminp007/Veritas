@@ -373,5 +373,383 @@
     ],
     "adversarial": true,
     "expected_failure_mode": "Baseline may say 504 can be used for working capital since it is a business loan, not knowing the fixed-asset restriction"
+  },
+  {
+    "id": "gt_026",
+    "category": "adversarial_dti_trap",
+    "query": "Is there a maximum debt-to-income ratio for SBA loans?",
+    "ground_truth_answer": "The SBA does not set a specific DTI cap in SOP 50 10 8 — repayment ability is assessed holistically. However, CUNA Best Practices recommend a maximum total DTI of 43% for consumer loans, and qualified mortgage rules generally cap DTI at 43%. SBA lenders apply their own DTI thresholds as part of credit analysis.",
+    "source_document": "CUNA Best Practices for Credit Union Lending 2024",
+    "key_facts": [
+      "SBA does not set specific DTI cap in SOP",
+      "CUNA recommends max 43% DTI for consumer loans",
+      "qualified mortgage rules cap DTI at 43%",
+      "lenders apply own DTI thresholds"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may state a specific DTI requirement as if the SBA mandates it, or confuse consumer mortgage DTI rules with SBA business loan standards"
+  },
+  {
+    "id": "gt_027",
+    "category": "adversarial_documentation",
+    "query": "What documents do I need for an SBA loan application?",
+    "ground_truth_answer": "Per the Internal Lending Policy Template, all loan files must contain: completed application, credit report dated within 30 days, income verification (W-2s, tax returns, or bank statements), collateral appraisal or valuation, debt-to-income calculation, and signed disclosures including TILA, RESPA, and applicable state disclosures.",
+    "source_document": "Internal Lending Policy Template - Community First Bank 2025",
+    "key_facts": [
+      "completed application required",
+      "credit report dated within 30 days",
+      "income verification W-2s tax returns or bank statements",
+      "collateral appraisal or valuation required",
+      "signed disclosures including TILA and RESPA"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give a generic list that misses specific requirements like the 30-day credit report window or RESPA disclosures"
+  },
+  {
+    "id": "gt_028",
+    "category": "adversarial_ltv_pricing",
+    "query": "Do lenders adjust SBA loan rates based on the loan-to-value ratio?",
+    "ground_truth_answer": "Yes. Per the Internal Lending Policy Template, LTV-based pricing adjustments apply: LTV under 80% gets a -0.25% rate reduction, LTV 80-90% is standard pricing, and LTV over 90% gets a +0.75% rate increase. These adjustments are lender-specific and are applied on top of the base rate.",
+    "source_document": "Internal Lending Policy Template - Community First Bank 2025",
+    "key_facts": [
+      "LTV under 80% gets -0.25% adjustment",
+      "LTV 80-90% is standard pricing",
+      "LTV over 90% gets +0.75% increase",
+      "adjustments are lender-specific"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say SBA rates are fixed by the SBA and do not vary by LTV, missing lender-level pricing adjustments"
+  },
+  {
+    "id": "gt_029",
+    "category": "adversarial_compensating_factors",
+    "query": "Can a borrower with a high DTI ratio still get approved for a loan?",
+    "ground_truth_answer": "Yes. Per CUNA Best Practices, compensating factors may include significant cash reserves, low loan-to-value ratios, stable employment history, and other mitigating circumstances. These can offset a high DTI and allow approval above the standard 43% threshold. The lender must document the compensating factors in the loan file.",
+    "source_document": "CUNA Best Practices for Credit Union Lending 2024",
+    "key_facts": [
+      "compensating factors can offset high DTI",
+      "significant cash reserves are a compensating factor",
+      "low LTV ratios are a compensating factor",
+      "compensating factors must be documented in loan file"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give a hard no based on DTI thresholds alone, not understanding compensating factor exceptions"
+  },
+  {
+    "id": "gt_030",
+    "category": "adversarial_discrimination",
+    "query": "Can a lender deny my loan application based on my marital status?",
+    "ground_truth_answer": "No. Per CUNA Best Practices and the Equal Credit Opportunity Act (ECOA), lenders are prohibited from discriminating based on race, color, religion, national origin, sex, marital status, age, receipt of public assistance, or exercise of rights under the Consumer Credit Protection Act. Marital status is explicitly a protected class.",
+    "source_document": "CUNA Best Practices for Credit Union Lending 2024",
+    "key_facts": [
+      "marital status is explicitly protected",
+      "ECOA prohibits discrimination",
+      "protected classes include race color religion national origin sex marital status age",
+      "receipt of public assistance is also protected"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give an incomplete list of protected classes or not cite ECOA specifically"
+  },
+  {
+    "id": "gt_031",
+    "category": "adversarial_504_structure",
+    "query": "How is an SBA 504 loan structured — is it a single loan from one lender?",
+    "ground_truth_answer": "No. The 504 program involves a multi-party structure: a private lender provides approximately 50% of the project cost, a Certified Development Company (CDC) provides up to 40% through an SBA-guaranteed debenture, and the borrower contributes at least 10% as equity. 504 loans are available exclusively through CDCs, not standard lenders.",
+    "source_document": "504 loans _ U.S. Small Business Administration.pdf",
+    "key_facts": [
+      "multi-party structure not single lender",
+      "private lender provides approximately 50%",
+      "CDC provides up to 40% via SBA-guaranteed debenture",
+      "borrower contributes at least 10% equity"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may describe it as a single loan from one lender, missing the 50-40-10 structure"
+  },
+  {
+    "id": "gt_032",
+    "category": "adversarial_504_rate_type",
+    "query": "Are SBA 504 loan rates variable like 7(a) loans?",
+    "ground_truth_answer": "No. Per the SBA 504 Loan Program Guide 2025, 504 loan rates are fixed and tied to the current market rate for 5-year and 10-year U.S. Treasury issues. This is different from 7(a) loans which are variable rate tied to the WSJ Prime Rate. The fixed-rate nature of 504 loans provides payment predictability.",
+    "source_document": "SBA 504 Loan Program Guide 2025",
+    "key_facts": [
+      "504 rates are fixed not variable",
+      "tied to U.S. Treasury issues",
+      "different from 7(a) which is variable tied to Prime",
+      "provides payment predictability"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say all SBA loans are variable rate, conflating 7(a) and 504 rate structures"
+  },
+  {
+    "id": "gt_033",
+    "category": "adversarial_504_max_amount",
+    "query": "Is there a maximum loan amount for the SBA 504 program?",
+    "ground_truth_answer": "There is no maximum total project cost for standard 504 projects. However, the SBA guarantee portion (the CDC portion) can go up to $5.5 million per project for projects that meet specific public policy goals or are manufacturing-focused. For refinancing existing debt under the 504 program, the maximum is $5 million.",
+    "source_document": "SBA 504 Loan Program Guide 2025",
+    "key_facts": [
+      "no maximum total project cost for standard 504",
+      "SBA guarantee portion up to $5.5 million",
+      "applies to public policy or manufacturing projects",
+      "refinancing maximum is $5 million"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may confuse the CDC portion maximum with the total project cost, or conflate 504 and 7(a) maximums"
+  },
+  {
+    "id": "gt_034",
+    "category": "adversarial_tila_rescission",
+    "query": "Can I cancel my business loan within 3 days under the right of rescission?",
+    "ground_truth_answer": "No. The 3-day right of rescission under TILA/Regulation Z applies only to certain consumer credit transactions secured by the borrower's principal dwelling, such as home equity loans. It does not apply to business-purpose loans or purchase-money mortgages. Business loans are generally exempt from Regulation Z consumer protections.",
+    "source_document": "Truth in Lending Act (TILA) & Regulation Z (Reg Z): Consumer Credit Protection & Compliance Overview.pdf",
+    "key_facts": [
+      "right of rescission applies to consumer credit only",
+      "only for loans secured by principal dwelling",
+      "does not apply to business-purpose loans",
+      "does not apply to purchase-money mortgages"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say the 3-day rescission applies to all loans including business loans, misapplying TILA provisions"
+  },
+  {
+    "id": "gt_035",
+    "category": "adversarial_tila_disclosure",
+    "query": "What information must a lender disclose under TILA before I sign a consumer loan?",
+    "ground_truth_answer": "Under TILA/Regulation Z, lenders must disclose: the Annual Percentage Rate (APR), the finance charge (total cost of credit in dollar terms), the amount financed, the total of payments, and the payment schedule. These disclosures must be provided before consummation of the transaction to allow the borrower to compare credit terms.",
+    "source_document": "Truth in Lending Act (TILA) & Regulation Z (Reg Z): Consumer Credit Protection & Compliance Overview.pdf",
+    "key_facts": [
+      "APR must be disclosed",
+      "finance charge in dollar terms must be disclosed",
+      "amount financed must be disclosed",
+      "total of payments and payment schedule required",
+      "disclosures before consummation of transaction"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give an incomplete list or confuse TILA disclosures with RESPA requirements"
+  },
+  {
+    "id": "gt_036",
+    "category": "adversarial_rate_spread",
+    "query": "What is the maximum interest rate a lender can charge on an SBA 7(a) loan under $50,000?",
+    "ground_truth_answer": "For SBA 7(a) loans of $50,000 or less, the maximum spread is Prime + 4.25% for terms of 7 years or less, and Prime + 4.75% for terms over 7 years. With Prime at 8.50% as of Q1 2025, that yields a maximum rate of approximately 12.75% to 13.25% depending on the term.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "Prime + 4.25% max spread for $50K or less up to 7yr term",
+      "Prime + 4.75% max spread for $50K or less over 7yr term",
+      "higher spreads allowed for smaller loans",
+      "different from spreads on loans over $50K"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may apply the over-$50K spread limits to all loans, missing the higher spreads allowed for smaller loans"
+  },
+  {
+    "id": "gt_037",
+    "category": "adversarial_startup",
+    "query": "Can a brand-new startup with no revenue get an SBA 7(a) loan?",
+    "ground_truth_answer": "Technically yes, but it is very difficult. Per SOP 50 10 8, the SBA does not prohibit lending to startups. However, the primary underwriting criterion is repayment ability, which is hard to demonstrate without revenue history. Lenders will require a strong business plan, owner equity injection, and may require collateral. Most startups need additional compensating factors.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "SBA does not prohibit startup lending",
+      "repayment ability is primary criterion",
+      "strong business plan required",
+      "equity injection typically required",
+      "difficult without revenue history"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give a definitive yes or no, missing the nuance that it is technically possible but practically very difficult"
+  },
+  {
+    "id": "gt_038",
+    "category": "adversarial_export_loan",
+    "query": "Can SBA loans be used to finance export activities?",
+    "ground_truth_answer": "Yes. The SBA offers specific export loan programs within the 7(a) framework, including Export Express (up to $500,000 with a 36-hour SBA turnaround) and Export Working Capital loans. These are designed to help small businesses enter or expand into foreign markets. Standard 7(a) loans can also fund export-related working capital.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "SBA has specific export loan programs",
+      "Export Express up to $500,000",
+      "Export Working Capital program exists",
+      "standard 7(a) can also fund export activities"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say SBA loans cannot be used for international activities, or may not know about the specific export programs"
+  },
+  {
+    "id": "gt_039",
+    "category": "adversarial_change_of_ownership",
+    "query": "Can I use an SBA 7(a) loan to buy an existing business?",
+    "ground_truth_answer": "Yes. Business acquisition is an eligible use of 7(a) loan proceeds per SOP 50 10 8. The acquisition must be of an eligible small business, and the buyer must demonstrate repayment ability. The SBA requires a business valuation and the purchase price must be supported by the valuation. Change of ownership is a recognized loan purpose.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "business acquisition is eligible use of 7(a)",
+      "must be acquisition of eligible small business",
+      "business valuation required",
+      "purchase price must be supported by valuation"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may be uncertain or add incorrect restrictions on using SBA loans for acquisitions"
+  },
+  {
+    "id": "gt_040",
+    "category": "adversarial_franchise",
+    "query": "Can franchise businesses get SBA 7(a) loans?",
+    "ground_truth_answer": "Yes, but the franchise must be listed on the SBA Franchise Directory. Per SOP 50 10 8, the SBA maintains a directory of approved franchise brands. The franchise agreement is reviewed to ensure no prohibited features such as excessive fees or control provisions. The franchisee must independently meet all SBA eligibility requirements including size standards.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "franchise must be on SBA Franchise Directory",
+      "franchise agreement reviewed by SBA",
+      "excessive fees or control provisions may disqualify",
+      "franchisee must independently meet size standards"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say all franchises qualify, missing the Franchise Directory requirement and agreement review"
+  },
+  {
+    "id": "gt_041",
+    "category": "adversarial_real_estate",
+    "query": "Can I use an SBA 7(a) loan to buy rental investment property?",
+    "ground_truth_answer": "No. SBA 7(a) loans cannot be used for passive real estate investment or rental property that the borrower does not actively occupy and operate. The property must be at least 51% owner-occupied for existing buildings (60% for new construction). Investment-only real estate is a prohibited use.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "passive investment property prohibited",
+      "51% owner-occupied required for existing buildings",
+      "60% owner-occupied for new construction",
+      "must actively operate the business at the property"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say real estate is eligible without specifying the owner-occupancy requirements"
+  },
+  {
+    "id": "gt_042",
+    "category": "adversarial_loan_term",
+    "query": "What is the maximum term for an SBA 7(a) loan?",
+    "ground_truth_answer": "Per SOP 50 10 8, the maximum term depends on the use of proceeds: up to 25 years for real estate, up to 10 years for equipment (matched to useful life), and up to 10 years for working capital. Mixed-use loans may blend terms. The SBA does not allow terms exceeding the useful life of the financed asset.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "25 years maximum for real estate",
+      "10 years maximum for equipment",
+      "10 years maximum for working capital",
+      "term cannot exceed useful life of asset"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may state a single maximum term like 25 years for all loan types, not distinguishing by purpose"
+  },
+  {
+    "id": "gt_043",
+    "category": "adversarial_credit_elsewhere",
+    "query": "Can I get an SBA loan even if I could get a conventional loan from a bank?",
+    "ground_truth_answer": "Generally no. Per SOP 50 10 8, the SBA requires a 'credit elsewhere' test — the lender must certify that the borrower cannot obtain credit on reasonable terms from non-federal sources. If the borrower qualifies for a conventional loan on reasonable terms, they are not eligible for the SBA guarantee. The SBA is a lender of last resort for small businesses.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "credit elsewhere test required",
+      "lender must certify borrower cannot get reasonable conventional terms",
+      "SBA is lender of last resort",
+      "borrowers qualifying for conventional loans on reasonable terms are ineligible"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say anyone can apply for an SBA loan regardless of other credit availability, missing the credit elsewhere requirement"
+  },
+  {
+    "id": "gt_044",
+    "category": "adversarial_criminal_history",
+    "query": "Can someone with a criminal record get an SBA loan?",
+    "ground_truth_answer": "It depends on the nature and recency of the conviction. Per SOP 50 10 8, applicants with certain criminal histories face restrictions. Individuals currently on probation, parole, or with pending charges are generally ineligible. However, the SBA considers each case individually and a past conviction does not automatically disqualify someone. SBA Form 912 (Statement of Personal History) must be completed.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "criminal history does not automatically disqualify",
+      "probation parole or pending charges generally ineligible",
+      "evaluated case by case",
+      "SBA Form 912 required"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may give a blanket yes or no without explaining the case-by-case evaluation and Form 912 requirement"
+  },
+  {
+    "id": "gt_045",
+    "category": "adversarial_second_lien",
+    "query": "Can the SBA take a second lien position on collateral?",
+    "ground_truth_answer": "Yes. Per SOP 50 10 8, the SBA can accept a second lien position if a first lien already exists and the collateral has sufficient equity. The SBA does not require a first lien in all cases. However, the lender must take all available collateral and may not leave unencumbered assets while taking a subordinate position on encumbered assets.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "SBA can accept second lien position",
+      "first lien not required in all cases",
+      "sufficient equity must exist in collateral",
+      "lender must take all available collateral"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say the SBA always requires a first lien position, which is incorrect"
+  },
+  {
+    "id": "gt_046",
+    "category": "adversarial_interest_only",
+    "query": "Can I get interest-only payments on an SBA 7(a) loan?",
+    "ground_truth_answer": "No, as a general rule. Per SOP 50 10 8, SBA 7(a) loans require fully amortizing payments. Interest-only periods are not standard. However, a brief deferral or standby period may be permitted during the construction phase of a construction loan. The SBA prioritizes repayment ability and structured amortization.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "fully amortizing payments required",
+      "interest-only not standard for 7(a)",
+      "brief deferral may be allowed during construction",
+      "structured amortization is SBA priority"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say interest-only payments are available as a standard option, confusing SBA loans with conventional commercial loans"
+  },
+  {
+    "id": "gt_047",
+    "category": "adversarial_variable_rate",
+    "query": "Can I lock in a fixed rate on an SBA 7(a) loan?",
+    "ground_truth_answer": "SBA 7(a) loans are predominantly variable rate, tied to the WSJ Prime Rate. Fixed rates are only available in limited circumstances and only on loans with maturities of less than 7 years. For most borrowers seeking a fixed rate on long-term financing, the 504 program (which offers fixed rates tied to Treasury issues) is the appropriate alternative.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "7(a) loans are predominantly variable rate",
+      "fixed rate only for maturities under 7 years in limited cases",
+      "tied to WSJ Prime Rate",
+      "504 program is fixed-rate alternative"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say fixed rates are readily available on 7(a) loans, or may not know the term limitation"
+  },
+  {
+    "id": "gt_048",
+    "category": "adversarial_nonprofit",
+    "query": "Can a nonprofit organization get an SBA 7(a) loan?",
+    "ground_truth_answer": "No. Per SOP 50 10 8, SBA 7(a) loans are for for-profit small businesses only. Nonprofit organizations, charitable organizations, and governmental entities are ineligible. The applicant business must be organized for profit and engaged in business activity in the United States.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "nonprofits are ineligible for 7(a)",
+      "must be for-profit small business",
+      "charitable organizations excluded",
+      "must be engaged in business in the United States"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say nonprofits can qualify since the SBA supports small organizations, not knowing the for-profit requirement"
+  },
+  {
+    "id": "gt_049",
+    "category": "adversarial_equity_injection",
+    "query": "Do I need to put any of my own money into an SBA-financed project?",
+    "ground_truth_answer": "Yes. Per SOP 50 10 8, the SBA generally requires an equity injection from the borrower, particularly for startups and business acquisitions. The typical equity injection is 10% to 20% of the total project cost. For 504 loans, the minimum borrower contribution is 10% (15% for startups or special-purpose properties). The SBA wants the borrower to have skin in the game.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "equity injection generally required",
+      "typically 10% to 20% of total project cost",
+      "504 minimum is 10% borrower contribution",
+      "15% for startups or special-purpose properties under 504"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say no down payment is required for SBA loans, which is a common misconception"
+  },
+  {
+    "id": "gt_050",
+    "category": "adversarial_microloan",
+    "query": "Is the SBA Microloan program part of the 7(a) program?",
+    "ground_truth_answer": "No. The SBA Microloan program is a separate program from 7(a). Microloans provide up to $50,000 to small businesses and nonprofit childcare centers through designated intermediary lenders, not standard SBA lenders. SOP 50 10 8 covers 7(a) and 504 programs only. The Microloan program has its own terms, eligibility, and maximum loan amounts.",
+    "source_document": "SOP 50 10 8 Technical Updates effective 6.1.2025.pdf",
+    "key_facts": [
+      "Microloan is separate from 7(a)",
+      "maximum $50,000 for microloans",
+      "delivered through intermediary lenders not standard SBA lenders",
+      "SOP 50 10 8 covers 7(a) and 504 only"
+    ],
+    "adversarial": true,
+    "expected_failure_mode": "Baseline may say microloans are a subset of the 7(a) program since both are SBA programs"
   }
 ]

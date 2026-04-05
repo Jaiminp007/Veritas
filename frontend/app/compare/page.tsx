@@ -5,13 +5,13 @@ import { getAuditRecords } from "@/lib/convex-data"
 
 export const metadata = {
   title: "Compare | Veritas Benchmark",
-  description: "Explore the full benchmark suite of 25 financial compliance queries.",
+  description: "Explore the full benchmark suite of 50 financial compliance queries.",
 }
 
 export const dynamic = "force-dynamic"
 
 export default async function ComparePage() {
-  const records = await getAuditRecords(25)
+  const records = await getAuditRecords(50)
 
   return (
     <main className="min-h-screen bg-background">
@@ -26,7 +26,7 @@ export default async function ComparePage() {
               <span className="w-2 h-2 rounded-full bg-emerald" />
             </div>
             <span className="text-sm text-muted-foreground">
-              Full Benchmark Suite (25 Queries)
+              Full Benchmark Suite (50 Queries)
             </span>
           </div>
           <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">

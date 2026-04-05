@@ -1,5 +1,6 @@
 import { Header } from "@/components/veritas/header"
 import { Hero } from "@/components/veritas/hero"
+import { LivePlayground } from "@/components/veritas/live-playground"
 import { Footer } from "@/components/veritas/footer"
 import { getSummaryMetrics } from "@/lib/convex-data"
 
@@ -12,6 +13,7 @@ export default async function HomePage() {
     <main className="min-h-screen bg-background">
       <Header />
       <Hero summary={summary} />
+      <LivePlayground />
       <Footer />
     </main>
   )

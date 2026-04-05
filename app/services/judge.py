@@ -65,7 +65,7 @@ def _is_refusal_like(response_text: str) -> bool:
     return any(re.search(pattern, lowered) for pattern in REFUSAL_PATTERNS)
 
 
-def _violated_facts(response_text: str, key_facts: list[str], *, threshold: float = 0.55) -> list[str]:
+def _violated_facts(response_text: str, key_facts: list[str], *, threshold: float = 0.45) -> list[str]:
     return [fact for fact in key_facts if token_overlap_ratio(response_text, fact) < threshold]
 
 
@@ -83,12 +83,21 @@ def _harden_judgment(
     substantive_answer = response_words >= 25 and max_overlap >= 0.2
 
     if (refusal_like or judgment.is_refusal) and not substantive_answer:
+        honest_refusal = any(
+            re.search(p, response_text.lower())
+            for p in (
+                r"documents?.*(do not|don't|does not|doesn't).*(state|show|say|contain|mention)",
+                r"cannot (answer|confirm|determine).*(with the|from the|based on).*(information|documents|context)",
+                r"not (available|found|present) in.*(the|my|provided).*(documents|context|sources)",
+            )
+        )
+        penalty = 0.15 if honest_refusal else max(judgment.penalty, 0.45 if violated_facts else 0.25)
         return HallucinationJudgment(
             is_hallucination=False,
             is_refusal=True,
-            penalty=max(judgment.penalty, 0.45 if violated_facts else 0.25),
+            penalty=penalty,
             violated_facts=violated_facts,
-            reason="Refusal or insufficient-context answer did not resolve the benchmark facts.",
+            reason="Honest refusal: information not in knowledge base." if honest_refusal else "Refusal or insufficient-context answer did not resolve the benchmark facts.",
         )
 
     if short_low_overlap:
@@ -125,6 +134,15 @@ def _harden_judgment(
             penalty=0.35,
             violated_facts=violated_facts,
             reason=judgment.reason,
+        )
+
+    if not refusal_like and not judgment.is_refusal and len(violated_facts) == len(key_facts) and response_words >= 10:
+        return HallucinationJudgment(
+            is_hallucination=True,
+            is_refusal=False,
+            penalty=max(judgment.penalty, 0.65),
+            violated_facts=violated_facts,
+            reason="Response covered none of the benchmark key facts.",
         )
 
     return judgment

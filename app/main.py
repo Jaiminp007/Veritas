@@ -15,7 +15,7 @@ from .config import load_config
 from .pipeline import PipelineManager
 from .rate_limit import limiter
 from .runtime_config import RuntimeConfigStore
-from .routers import audit, config, metrics, pipeline
+from .routers import audit, config, metrics, pipeline, playground
 from .services.convex import ConvexClient
 from .services.ollama import OllamaClient
 from .services.senso import SensoClient
@@ -47,11 +47,18 @@ async def lifespan(app: FastAPI):
     ollama_client = OllamaClient(
         base_url=settings.llm_providers.baseline.base_url,
         timeout=max(settings.pipeline.baseline_llm_timeout, settings.pipeline.judge_llm_timeout),
+        api_key=os.getenv("LLM_API_KEY"),
     )
     senso_client = SensoClient(
         api_url=settings.senso.api_url,
         api_key=os.getenv("SENSO_API_KEY", ""),
         timeout=settings.senso.timeout,
+    )
+    github_token = os.getenv("GITHUB_TOKEN") or os.getenv("LLM_API_KEY") or ""
+    playground_llm_client = OllamaClient(
+        base_url="https://models.github.ai/inference",
+        timeout=settings.pipeline.baseline_llm_timeout,
+        api_key=github_token,
     )
     manager = PipelineManager(
         settings_path=None,
@@ -59,11 +66,13 @@ async def lifespan(app: FastAPI):
         ollama_client=ollama_client,
         senso_client=senso_client,
         runtime_config=runtime_config,
+        playground_llm_client=playground_llm_client,
     )
 
     app.state.settings = settings
     app.state.runtime_config = runtime_config
     app.state.convex_client = convex_client
+    app.state.playground_llm_client = playground_llm_client
     app.state.pipeline_manager = manager
     app.state.limiter = limiter
 
@@ -92,6 +101,7 @@ app.include_router(pipeline.router)
 app.include_router(metrics.router)
 app.include_router(audit.router)
 app.include_router(config.router)
+app.include_router(playground.router)
 
 
 @app.get("/health")

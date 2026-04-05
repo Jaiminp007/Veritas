@@ -16,7 +16,7 @@ export default async function ResultsPage() {
   const [summary, categories, records] = await Promise.all([
     getSummaryMetrics(),
     getCategoryMetrics(),
-    getAuditRecords(10),
+    getAuditRecords(20),
   ])
 
   return (

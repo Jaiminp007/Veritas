@@ -84,7 +84,7 @@ export async function getCategoryMetrics(): Promise<CategoryMetrics[]> {
   return rows ?? [];
 }
 
-export async function getAuditRecords(limit = 25): Promise<AuditRecord[]> {
+export async function getAuditRecords(limit = 50): Promise<AuditRecord[]> {
   const rows = await runQuery<any[]>("queries:getAll");
   if (!rows) {
     return [];

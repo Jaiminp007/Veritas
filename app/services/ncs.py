@@ -52,6 +52,9 @@ def _fact_tokens(fact: str) -> set[str]:
     return _normalize(fact)
 
 
+NEGATION_WORDS = {"not", "no", "cannot", "never", "none", "neither", "nor", "without"}
+
+
 def _numeric_tokens(tokens: set[str]) -> set[str]:
     return {token for token in tokens if any(char.isdigit() for char in token) or "%" in token or "$" in token}
 
@@ -64,12 +67,26 @@ def token_overlap_ratio(text: str, fact: str) -> float:
     return len(text_tokens & fact_tokens) / len(fact_tokens)
 
 
-def _supports_fact(text_tokens: set[str], fact_tokens: set[str], *, min_overlap: float) -> bool:
+def _has_negation_conflict(text: str, fact: str, text_tokens: set[str], fact_tokens: set[str]) -> bool:
+    content_tokens = fact_tokens - NEGATION_WORDS
+    if not content_tokens:
+        return False
+    content_overlap = len(text_tokens & content_tokens) / len(content_tokens)
+    if content_overlap < 0.4:
+        return False
+    fact_has_negation = bool(NEGATION_WORDS & _normalize(fact))
+    text_has_negation = bool(NEGATION_WORDS & _normalize(text))
+    return fact_has_negation != text_has_negation
+
+
+def _supports_fact(text_tokens: set[str], fact_tokens: set[str], *, min_overlap: float, text: str = "", fact: str = "") -> bool:
     if not fact_tokens:
         return False
     overlap = len(text_tokens & fact_tokens) / len(fact_tokens)
     numeric_tokens = _numeric_tokens(fact_tokens)
     if numeric_tokens and not numeric_tokens.issubset(text_tokens):
+        return False
+    if text and fact and _has_negation_conflict(text, fact, text_tokens, fact_tokens):
         return False
     return overlap >= min_overlap
 
@@ -81,7 +98,7 @@ def fact_coverage(response_text: str, key_facts: list[str]) -> float:
     matches = 0
     for fact in key_facts:
         fact_tokens = _fact_tokens(fact)
-        if _supports_fact(response_tokens, fact_tokens, min_overlap=MIN_FACT_OVERLAP):
+        if _supports_fact(response_tokens, fact_tokens, min_overlap=MIN_FACT_OVERLAP, text=response_text, fact=fact):
             matches += 1
     return matches / len(key_facts)
 
@@ -93,6 +110,7 @@ def citation_match(citations: list[str], key_facts: list[str]) -> float:
     citation_tokens = _normalize(citation_text)
     matches = 0
     for fact in key_facts:
+        # No negation check for citations — they're raw source material, not claims
         if _supports_fact(citation_tokens, _fact_tokens(fact), min_overlap=MIN_CITATION_OVERLAP):
             matches += 1
     return matches / len(key_facts)

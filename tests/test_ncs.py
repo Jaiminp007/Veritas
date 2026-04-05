@@ -40,6 +40,26 @@ def test_token_overlap_handles_currency_and_partial_fact_matches() -> None:
     assert overlap >= 0.8
 
 
+def test_negation_conflict_rejects_contradicted_fact() -> None:
+    from app.services.ncs import fact_coverage
+
+    coverage = fact_coverage(
+        "The Fed rate is at zero and has been for some time.",
+        ["Fed rate not at zero, 3.64% March 2026"],
+    )
+    assert coverage == 0.0
+
+
+def test_no_negation_conflict_when_polarity_matches() -> None:
+    from app.services.ncs import fact_coverage
+
+    coverage = fact_coverage(
+        "The Fed rate is not at zero, it is 3.64% as of March 2026.",
+        ["Fed rate not at zero, 3.64% March 2026"],
+    )
+    assert coverage == 1.0
+
+
 def test_compute_ncs_citation_match_accepts_partial_supported_snippets() -> None:
     weights = NCSWeights(alpha=0.5, beta=0.8, delta=0.3)
     breakdown = compute_ncs(

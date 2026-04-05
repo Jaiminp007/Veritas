@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: senso-veritas-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CONFIG_PATH
+        value: app/config.prod.yaml
+      - key: LLM_API_KEY
+        sync: false  # set manually in Render dashboard (GitHub token)
+      - key: SENSO_API_KEY
+        sync: false  # set manually in Render dashboard
+      - key: CONVEX_DEPLOYMENT
+        sync: false  # set manually in Render dashboard
+      - key: CONVEX_DEPLOY_KEY
+        sync: false  # set manually in Render dashboard
+      - key: PYTHON_VERSION
+        value: "3.12"
+    healthCheckPath: /health

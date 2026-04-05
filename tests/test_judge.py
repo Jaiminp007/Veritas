@@ -46,7 +46,7 @@ async def test_refusal_gets_nonzero_penalty_when_facts_are_unanswered() -> None:
     judgment = await judge_response(
         client,
         model="qwen2.5:7b",
-        response_text="I cannot determine that from the provided documents.",
+        response_text="I don't know the answer to that question.",
         key_facts=[
             "0% fee for loans up to $150,000",
             "3% for $150,001 to $700,000",
@@ -56,6 +56,47 @@ async def test_refusal_gets_nonzero_penalty_when_facts_are_unanswered() -> None:
     assert judgment.is_refusal is True
     assert judgment.penalty >= 0.45
     assert len(judgment.violated_facts) == 2
+
+
+@pytest.mark.asyncio
+async def test_honest_refusal_gets_reduced_penalty() -> None:
+    client = FakeJudgeClient(
+        '{"is_hallucination": false, "is_refusal": true, "penalty": 0.0, "violated_facts": [], "reason": "refusal"}'
+    )
+
+    judgment = await judge_response(
+        client,
+        model="qwen2.5:7b",
+        response_text="I cannot determine that from the provided documents. The documents do not state any specific fee schedule.",
+        key_facts=[
+            "0% fee for loans up to $150,000",
+            "3% for $150,001 to $700,000",
+        ],
+    )
+
+    assert judgment.is_refusal is True
+    assert judgment.penalty == 0.15
+
+
+@pytest.mark.asyncio
+async def test_zero_fact_coverage_gets_hallucination_penalty() -> None:
+    client = FakeJudgeClient(
+        '{"is_hallucination": false, "is_refusal": false, "penalty": 0.0, "violated_facts": [], "reason": "ok"}'
+    )
+
+    judgment = await judge_response(
+        client,
+        model="qwen2.5:7b",
+        response_text="The interest rate depends on various market factors and the specific lender you choose to work with for your financing needs.",
+        key_facts=[
+            "WSJ Prime Rate 8.50% Q1 2025",
+            "spread 2.25% for over $50K up to 7yr",
+            "spread 2.75% for over $50K greater than 7yr",
+        ],
+    )
+
+    assert judgment.is_hallucination is True
+    assert judgment.penalty >= 0.65
 
 
 @pytest.mark.asyncio
