@@ -49,10 +49,10 @@ const SOURCE_DOCS = [
 ]
 
 const SAMPLE_QUERIES = [
-  "What is the maximum LTV ratio for a conventional mortgage?",
-  "Can I get a zero-interest credit card with no fees?",
-  "What are the KYC requirements under FATF guidelines?",
-  "Is a 2% cashback rate guaranteed for life on all purchases?",
+  "What is the maximum SBA 7(a) loan amount I can get?",
+  "Are there prepayment penalties on SBA loans?",
+  "What is the current Prime Rate for SBA loan pricing?",
+  "Can I use an SBA 504 loan for working capital?",
 ]
 
 export function LivePlayground() {
