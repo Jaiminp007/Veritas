@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Github } from "lucide-react"
 
@@ -39,25 +40,15 @@ export function Header() {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              className={`transition-transform duration-500 ${isHovered ? "rotate-180" : ""}`}
-            >
-              <path
-                d="M16 2L6 28H12L16 18L20 28H26L16 2Z"
-                fill="url(#gradient)"
-                className="drop-shadow-[0_0_10px_rgba(0,240,255,0.5)]"
+            <div className={`transition-transform duration-500 ${isHovered ? "rotate-180" : ""}`}>
+              <Image
+                src="/icon.svg"
+                alt="Veritas Logo"
+                width={32}
+                height={32}
+                className="drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]"
               />
-              <defs>
-                <linearGradient id="gradient" x1="16" y1="2" x2="16" y2="28">
-                  <stop stopColor="#00F0FF" />
-                  <stop offset="1" stopColor="#2AC78A" />
-                </linearGradient>
-              </defs>
-            </svg>
+            </div>
           </div>
           <span className="font-display text-lg font-semibold tracking-tight text-foreground">
             Veritas
