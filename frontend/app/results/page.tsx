@@ -1,6 +1,7 @@
 import { Header } from "@/components/veritas/header"
 import { AuditWindow } from "@/components/veritas/audit-window"
 import { BentoFeatures } from "@/components/veritas/bento-features"
+import { GlobalMetrics } from "@/components/veritas/global-metrics"
 import { Footer } from "@/components/veritas/footer"
 import { getAuditRecords, getCategoryMetrics, getSummaryMetrics } from "@/lib/convex-data"
 
@@ -37,17 +38,20 @@ export default async function ResultsPage() {
           <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
             Benchmark <span className="text-cyan">Results</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
             Real-time performance metrics and audit logs from every query processed through the Veritas benchmark system.
           </p>
         </div>
       </section>
 
+      {/* Metrics Strip */}
+      <GlobalMetrics summary={summary} />
+
       {/* Grid Background Wrapper */}
       <div className="relative">
         <div className="absolute inset-0 grid-background pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,oklch(0_0_0)_80%)] pointer-events-none" />
-        <div className="relative z-10">
+        <div className="relative z-10 pt-24">
           <AuditWindow records={records} />
           <BentoFeatures summary={summary} categories={categories} />
         </div>

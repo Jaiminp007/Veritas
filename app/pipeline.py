@@ -176,21 +176,19 @@ class PipelineManager:
             senso_response_text = senso_payload.answer
             senso_citations = senso_payload.citations
 
-            baseline_judgment, senso_judgment = await asyncio.gather(
-                judge_response(
-                    self.ollama_client,
-                    model=self.settings.llm_providers.judge.model,
-                    response_text=baseline_response_text,
-                    key_facts=entry.key_facts,
-                    timeout=self.settings.pipeline.judge_llm_timeout,
-                ),
-                judge_response(
-                    self.ollama_client,
-                    model=self.settings.llm_providers.judge.model,
-                    response_text=senso_response_text,
-                    key_facts=entry.key_facts,
-                    timeout=self.settings.pipeline.judge_llm_timeout,
-                ),
+            baseline_judgment = await judge_response(
+                self.ollama_client,
+                model=self.settings.llm_providers.judge.model,
+                response_text=baseline_response_text,
+                key_facts=entry.key_facts,
+                timeout=self.settings.pipeline.judge_llm_timeout,
+            )
+            senso_judgment = await judge_response(
+                self.ollama_client,
+                model=self.settings.llm_providers.judge.model,
+                response_text=senso_response_text,
+                key_facts=entry.key_facts,
+                timeout=self.settings.pipeline.judge_llm_timeout,
             )
         except Exception as exc:
             status = "failed"

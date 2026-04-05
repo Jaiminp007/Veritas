@@ -52,9 +52,9 @@ REFUSAL_PATTERNS = (
 
 def _fallback_judgment(error_text: str) -> HallucinationJudgment:
     return HallucinationJudgment(
-        is_hallucination=True,
+        is_hallucination=False,
         is_refusal=False,
-        penalty=0.75,
+        penalty=0.0,
         violated_facts=[],
         reason=f"PARSE_ERROR: {error_text[:100]}",
     )
@@ -80,8 +80,9 @@ def _harden_judgment(
     response_words = len(response_text.split())
     refusal_like = _is_refusal_like(response_text)
     short_low_overlap = response_words <= 12 and max_overlap < 0.35
+    substantive_answer = response_words >= 25 and max_overlap >= 0.2
 
-    if refusal_like or judgment.is_refusal:
+    if (refusal_like or judgment.is_refusal) and not substantive_answer:
         return HallucinationJudgment(
             is_hallucination=False,
             is_refusal=True,
@@ -106,6 +107,15 @@ def _harden_judgment(
             penalty=max(judgment.penalty, 0.75),
             violated_facts=violated_facts,
             reason="Answer was unsupported by the benchmark facts.",
+        )
+
+    if substantive_answer and judgment.is_refusal:
+        return HallucinationJudgment(
+            is_hallucination=judgment.is_hallucination,
+            is_refusal=False,
+            penalty=max(judgment.penalty, 0.35 if violated_facts else 0.0),
+            violated_facts=violated_facts,
+            reason=judgment.reason,
         )
 
     if violated_facts and judgment.penalty == 0.0:

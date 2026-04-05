@@ -95,7 +95,7 @@ export function Hero({ summary }: HeroProps) {
             color="emerald"
           />
           <MetricCard
-            value={`${hallucinationsPrevented >= 0 ? "-" : "+"}${formatPercent(Math.abs(hallucinationsPrevented))}`}
+            value={`${hallucinationsPrevented > 0 ? "+" : ""}${formatPercent(hallucinationsPrevented)}`}
             label="Hallucinations Prevented"
             color="orange"
           />

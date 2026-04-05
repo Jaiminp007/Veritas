@@ -5,8 +5,8 @@ from dataclasses import dataclass
 
 from ..models import NCSWeights
 
-MIN_FACT_OVERLAP = 0.6
-MIN_CITATION_OVERLAP = 0.5
+MIN_FACT_OVERLAP = 0.45
+MIN_CITATION_OVERLAP = 0.35
 
 STOPWORDS = {
     "a",

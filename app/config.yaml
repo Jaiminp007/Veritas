@@ -7,17 +7,17 @@ pipeline:
   ground_truth_file: "data/ground_truth.json"
   baseline_llm_timeout: 120.0
   senso_llm_timeout: 60.0
-  judge_llm_timeout: 600.0
+  judge_llm_timeout: 120.0
 
 llm_providers:
   baseline:
     provider: "ollama"
-    model: "qwen2.5:latest"
-    base_url: "http://localhost:11434/v1"
+    model: "llama3:latest"
+    base_url: "http://127.0.0.1:11434/v1"
   judge:
     provider: "ollama"
-    model: "qwen3.5:latest"
-    base_url: "http://localhost:11434/v1"
+    model: "qwen2.5:latest"
+    base_url: "http://127.0.0.1:11434/v1"
 
 resilience:
   consecutive_failures_threshold: 3

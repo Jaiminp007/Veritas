@@ -37,7 +37,7 @@ export function Footer() {
               <span className="text-emerald">Senso.ai</span>
             </div>
             <div className="text-xs mt-1">
-              © 2024 Jaimin Kamal Patel. All rights reserved.
+              © 2026 Jaimin Kamal Patel. All rights reserved.
             </div>
           </div>
         </div>

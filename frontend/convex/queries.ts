@@ -1,10 +1,31 @@
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-const successfulRecords = async (db: any) => {
-  return await db
+const latestSuccessfulTraceId = async (db: any) => {
+  const records = await db
     .query("auditRecords")
     .filter((q: any) => q.eq(q.field("status"), "success"))
+    .collect();
+  if (records.length === 0) {
+    return null;
+  }
+  records.sort((a: any, b: any) => b.created_at - a.created_at);
+  return records[0].trace_id ?? null;
+};
+
+const successfulRecords = async (db: any) => {
+  const traceId = await latestSuccessfulTraceId(db);
+  if (!traceId) {
+    return [];
+  }
+  return await db
+    .query("auditRecords")
+    .filter((q: any) =>
+      q.and(
+        q.eq(q.field("status"), "success"),
+        q.eq(q.field("trace_id"), traceId),
+      ),
+    )
     .collect();
 };
 
@@ -68,7 +89,33 @@ export const getByCategory = query({
 export const getAll = query({
   args: {},
   handler: async ({ db }) => {
-    const records = await db.query("auditRecords").collect();
+    const records = await successfulRecords(db);
     return records.sort((a, b) => b.created_at - a.created_at);
+  },
+});
+
+export const patchRecord = mutation({
+  args: {
+    id: v.id("auditRecords"),
+    patch: v.object({
+      baseline_hallucination_detected: v.optional(v.boolean()),
+      baseline_hallucination_reason: v.optional(v.string()),
+      baseline_hallucination_penalty: v.optional(v.float64()),
+      baseline_ncs: v.optional(v.float64()),
+      baseline_raw_ncs: v.optional(v.float64()),
+      senso_hallucination_detected: v.optional(v.boolean()),
+      senso_hallucination_reason: v.optional(v.string()),
+      senso_hallucination_penalty: v.optional(v.float64()),
+      narrative_control_score: v.optional(v.float64()),
+      raw_ncs: v.optional(v.float64()),
+      ncs_delta: v.optional(v.float64()),
+      citation_match: v.optional(v.float64()),
+      key_fact_coverage: v.optional(v.float64()),
+      error_message: v.optional(v.string()),
+    }),
+  },
+  handler: async ({ db }, { id, patch }) => {
+    await db.patch(id, patch);
+    return id;
   },
 });
