@@ -269,11 +269,23 @@ class PipelineManager:
         )
         senso_task = self.senso_client.search(query, max_results=3)
 
-        baseline_payload, senso_payload = await asyncio.gather(baseline_task, senso_task)
+        results = await asyncio.gather(baseline_task, senso_task, return_exceptions=True)
 
-        baseline_response = client.extract_content(baseline_payload)
-        senso_response = senso_payload.answer
-        senso_citations = senso_payload.citations
+        baseline_payload = results[0]
+        senso_payload = results[1]
+
+        if isinstance(baseline_payload, Exception):
+            baseline_response = "The baseline LLM was unable to process this query."
+        else:
+            baseline_response = client.extract_content(baseline_payload)
+
+        if isinstance(senso_payload, Exception):
+            senso_response = "The Senso API was unable to process this query."
+            senso_citations = []
+        else:
+            senso_response = senso_payload.answer
+            senso_citations = senso_payload.citations
+
         latency_ms = (time.perf_counter() - started) * 1000.0
 
         return {
