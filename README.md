@@ -4,6 +4,8 @@ An adversarial benchmarking platform that proves the Senso Context Layer elimina
 
 **Live:** [veritas-senso.vercel.app](https://veritas-senso.vercel.app)
 
+<img width="1435" height="832" alt="Screenshot 2026-04-06 at 11 42 46 AM" src="https://github.com/user-attachments/assets/48849336-d110-4752-ac29-7e93e8aabb13" />
+
 ## Results
 
 | Metric | Baseline LLM | Senso API |
@@ -28,16 +30,16 @@ User Query
     │
     ▼
 ┌─────────────────────┐
-│   Veritas Pipeline   │
-│  (FastAPI + Render)  │
-└──────┬──────┬────────┘
-       │      │
-       ▼      ▼
-  ┌────────┐ ┌──────────┐
-  │Raw LLM │ │ Senso API│
-  │(GPT-4o)│ │(Context  │
-  │  mini  │ │  Layer)  │
-  └────┬───┘ └────┬─────┘
+│   Veritas Pipeline  │
+│  (FastAPI + Render) │
+└──────┬──────────┬───┘
+       │          │
+       ▼          ▼
+  ┌────────┐ ┌───────────┐
+  │Raw LLM │ │ Senso API │
+  │(GPT-4o)│ │(Context   │
+  │  mini  │ │  Layer)   │
+  └────┬───┘ └────┬──────┘
        │          │
        ▼          ▼
 ┌─────────────────────┐
