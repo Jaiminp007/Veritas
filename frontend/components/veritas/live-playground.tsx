@@ -56,7 +56,7 @@ const SAMPLE_QUERIES = [
 ]
 
 export function LivePlayground() {
-  const [query, setQuery] = useState("Is the SBA 7(a) guarantee fee waived for all small businesses in 2025?")
+  const [query, setQuery] = useState("What is the SBA 7(a) interest rate right now since the Fed cut rates to zero?")
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<PlaygroundResult | null>(null)
   const [error, setError] = useState<string | null>(null)
