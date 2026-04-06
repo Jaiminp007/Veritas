@@ -4,10 +4,7 @@ import { ArrowRight, Play } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { SummaryMetrics } from "@/lib/convex-data"
-
-function formatPercent(value: number) {
-  return `${(value * 100).toFixed(1)}%`
-}
+import { useCountUp, useFadeIn } from "@/hooks/use-count-up"
 
 type HeroProps = {
   summary: SummaryMetrics | null
@@ -84,20 +81,26 @@ export function Hero({ summary }: HeroProps) {
 
         {/* Metric Strip */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
-          <MetricCard
-            value={totalQueries.toLocaleString()}
+          <AnimatedMetricCard
+            target={totalQueries}
+            format={(v) => Math.round(v).toLocaleString()}
             label="Queries Processed"
             color="cyan"
+            delay={0}
           />
-          <MetricCard
-            value={`${averageDelta >= 0 ? "+" : ""}${formatPercent(averageDelta)}`}
+          <AnimatedMetricCard
+            target={averageDelta * 100}
+            format={(v) => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`}
             label="Senso Performance Lift"
             color="emerald"
+            delay={150}
           />
-          <MetricCard
-            value={`${hallucinationsPrevented > 0 ? "+" : ""}${formatPercent(hallucinationsPrevented)}`}
-            label="Hallucinations Prevented"
+          <AnimatedMetricCard
+            target={hallucinationsPrevented * 100}
+            format={(v) => `-${v.toFixed(1)}%`}
+            label="Hallucination Rate Drop"
             color="orange"
+            delay={300}
           />
         </div>
       </div>
@@ -105,15 +108,22 @@ export function Hero({ summary }: HeroProps) {
   )
 }
 
-function MetricCard({
-  value,
+function AnimatedMetricCard({
+  target,
+  format,
   label,
   color,
+  delay,
 }: {
-  value: string
+  target: number
+  format: (v: number) => string
   label: string
   color: "cyan" | "emerald" | "orange"
+  delay: number
 }) {
+  const { value, ref: countRef } = useCountUp(target, 1200, 1)
+  const { ref: fadeRef, visible } = useFadeIn(delay)
+
   const borderClass = {
     cyan: "border-cyan/20 hover:border-cyan/40",
     emerald: "border-emerald/20 hover:border-emerald/40",
@@ -128,10 +138,16 @@ function MetricCard({
 
   return (
     <div
-      className={`glass rounded-xl p-6 border ${borderClass} transition-all duration-300 hover:scale-[1.02]`}
+      ref={(el) => {
+        (countRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+        (fadeRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      }}
+      className={`glass rounded-xl p-6 border ${borderClass} transition-all duration-700 hover:scale-[1.02] ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
     >
       <div className={`font-display text-3xl sm:text-4xl font-bold ${textClass} mb-2`}>
-        {value}
+        {format(value)}
       </div>
       <div className="text-sm text-muted-foreground">{label}</div>
     </div>

@@ -60,7 +60,7 @@ function SystemDiagram() {
           <div className="flex flex-col items-center gap-6">
             {/* User Layer */}
             <div className="flex items-center gap-4">
-              <div className="glass rounded-xl p-4 border border-border flex items-center gap-3 min-w-[160px]">
+              <div className="glass rounded-xl p-4 border border-border flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-secondary">
                   <Network className="h-5 w-5 text-muted-foreground" />
                 </div>
@@ -75,7 +75,7 @@ function SystemDiagram() {
             <div className="h-8 w-px bg-gradient-to-b from-border via-cyan to-border" />
             
             {/* Veritas Layer */}
-            <div className="glass rounded-xl p-6 border-2 border-cyan/30 min-w-[280px]">
+            <div className="glass rounded-xl p-6 border-2 border-cyan/30 w-full max-w-[320px]">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 rounded-lg bg-cyan/10">
                   <Layers className="h-5 w-5 text-cyan" />
@@ -85,7 +85,7 @@ function SystemDiagram() {
                   <div className="text-xs text-muted-foreground">Benchmark Orchestrator</div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div className="p-2 rounded-lg bg-secondary/50 text-muted-foreground">Query Parser</div>
                 <div className="p-2 rounded-lg bg-secondary/50 text-muted-foreground">Response Validator</div>
                 <div className="p-2 rounded-lg bg-secondary/50 text-muted-foreground">Audit Logger</div>
@@ -94,7 +94,7 @@ function SystemDiagram() {
             </div>
             
             {/* Split Arrows */}
-            <div className="flex items-center gap-16">
+            <div className="flex items-center gap-8 sm:gap-16">
               <div className="flex flex-col items-center">
                 <div className="h-6 w-px bg-gradient-to-b from-cyan to-orange" />
                 <div className="text-xs text-orange font-mono">baseline</div>
@@ -106,12 +106,12 @@ function SystemDiagram() {
             </div>
             
             {/* LLM Layer */}
-            <div className="flex items-center gap-8">
-              <div className="glass rounded-xl p-4 border border-orange/30 min-w-[140px] text-center">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <div className="glass rounded-xl p-4 border border-orange/30 text-center w-full sm:w-auto">
                 <div className="text-sm font-medium text-orange">Raw LLM</div>
                 <div className="text-xs text-muted-foreground mt-1">No Context</div>
               </div>
-              <div className="glass rounded-xl p-4 border-2 border-emerald/30 min-w-[160px] text-center">
+              <div className="glass rounded-xl p-4 border-2 border-emerald/30 text-center w-full sm:w-auto">
                 <div className="text-sm font-medium text-emerald">Senso API</div>
                 <div className="text-xs text-muted-foreground mt-1">Context Layer</div>
               </div>
@@ -121,7 +121,7 @@ function SystemDiagram() {
             <div className="h-8 w-px bg-gradient-to-b from-emerald via-border to-border" />
             
             {/* Data Layer */}
-            <div className="glass rounded-xl p-4 border border-border flex items-center gap-3 min-w-[200px]">
+            <div className="glass rounded-xl p-4 border border-border flex items-center gap-3">
               <div className="p-2 rounded-lg bg-emerald/10">
                 <Database className="h-5 w-5 text-emerald" />
               </div>

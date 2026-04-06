@@ -33,9 +33,9 @@ export function BentoFeatures({ categories, summary }: BentoFeaturesProps) {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Large - Ingestion Analytics */}
-          <div className="md:col-span-2 md:row-span-2 glass rounded-2xl p-6 border border-border hover:border-cyan/30 transition-all duration-300 hover:scale-[1.01] group">
+          <div className="sm:col-span-2 lg:col-span-2 lg:row-span-2 glass rounded-2xl p-6 border border-border hover:border-cyan/30 transition-all duration-300 hover:scale-[1.01] group">
             <div className="h-full flex flex-col">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-cyan/10">
@@ -117,7 +117,7 @@ export function BentoFeatures({ categories, summary }: BentoFeaturesProps) {
           </div>
 
           {/* Card 2: Medium - Adversarial Audit */}
-          <div className="md:col-span-2 glass rounded-2xl p-6 border border-border hover:border-emerald/30 transition-all duration-300 hover:scale-[1.01]">
+          <div className="sm:col-span-2 lg:col-span-2 glass rounded-2xl p-6 border border-border hover:border-emerald/30 transition-all duration-300 hover:scale-[1.01]">
             <div className="flex items-center gap-2 mb-4">
               <div className="p-2 rounded-lg bg-emerald/10">
                 <CheckCircle2 className="h-5 w-5 text-emerald" />

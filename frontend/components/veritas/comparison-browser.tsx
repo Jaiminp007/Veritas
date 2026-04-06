@@ -24,7 +24,7 @@ export function ComparisonBrowser({ records }: ComparisonBrowserProps) {
   )
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-[800px] border-t border-border/40">
+    <div className="flex flex-col lg:flex-row min-h-[500px] lg:min-h-[800px] border-t border-border/40">
       {/* Sidebar: Query List */}
       <div className="w-full lg:w-[400px] border-r border-border/40 bg-background/50 backdrop-blur-sm flex flex-col">
         <div className="p-6 border-b border-border/40">
@@ -138,7 +138,7 @@ export function ComparisonBrowser({ records }: ComparisonBrowserProps) {
                    <div className="p-6 rounded-2xl glass border border-border/50">
                       <div className="text-xs text-muted-foreground uppercase tracking-widest mb-2">Latency</div>
                       <div className="text-2xl font-display font-bold text-foreground">
-                         {selectedRecord.latency_ms}ms
+                         {(selectedRecord.latency_ms / 1000).toFixed(1)}s
                       </div>
                       <p className="text-[10px] text-muted-foreground mt-2">
                          Total round-trip time for Senso API response.

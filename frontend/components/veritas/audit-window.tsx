@@ -53,67 +53,72 @@ export function AuditWindow({ records }: AuditWindowProps) {
             <div className="w-16" />
           </div>
 
-          {/* Table Header */}
-          <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-secondary/30 border-b border-border text-xs font-mono uppercase tracking-wider text-muted-foreground">
-            <div className="col-span-3">Request ID</div>
-            <div className="col-span-3">Category</div>
-            <div className="col-span-2">Latency</div>
-            <div className="col-span-2">Accuracy</div>
-            <div className="col-span-2">Status</div>
-          </div>
+          {/* Scrollable Table */}
+          <div className="overflow-x-auto">
+            <div className="min-w-[640px]">
+              {/* Table Header */}
+              <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-secondary/30 border-b border-border text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                <div className="col-span-3">Request ID</div>
+                <div className="col-span-3">Category</div>
+                <div className="col-span-2">Latency</div>
+                <div className="col-span-2">Accuracy</div>
+                <div className="col-span-2">Status</div>
+              </div>
 
-          {/* Table Body */}
-          <div className="divide-y divide-border">
-            {records.map((record, index) => (
-              <div
-                key={record._id}
-                className={`grid grid-cols-12 gap-4 px-6 py-4 hover:bg-secondary/20 transition-colors ${
-                  index === 0 ? "bg-cyan/5" : ""
-                }`}
-              >
-                <div className="col-span-3 font-mono text-sm text-cyan">
-                  {record.query_id || record._id.slice(-8)}
-                </div>
-                <div className="col-span-3 text-sm text-foreground">
-                  {record.category}
-                </div>
-                <div className="col-span-2 font-mono text-sm text-muted-foreground flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {formatLatency(record.latency_ms)}
-                </div>
-                <div className="col-span-2">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${record.narrative_control_score >= 0.5 ? "bg-emerald" : "bg-orange"}`}
-                        style={{ width: `${Math.round(record.narrative_control_score * 100)}%` }}
-                      />
+              {/* Table Body */}
+              <div className="divide-y divide-border">
+                {records.map((record, index) => (
+                  <div
+                    key={record._id}
+                    className={`grid grid-cols-12 gap-4 px-6 py-4 hover:bg-secondary/20 transition-colors ${
+                      index === 0 ? "bg-cyan/5" : ""
+                    }`}
+                  >
+                    <div className="col-span-3 font-mono text-sm text-cyan">
+                      {record.query_id || record._id.slice(-8)}
                     </div>
-                    <span className="font-mono text-xs text-emerald">
-                      {Math.round(record.narrative_control_score * 100)}%
-                    </span>
+                    <div className="col-span-3 text-sm text-foreground">
+                      {record.category}
+                    </div>
+                    <div className="col-span-2 font-mono text-sm text-muted-foreground flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {formatLatency(record.latency_ms)}
+                    </div>
+                    <div className="col-span-2">
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-1.5 bg-secondary rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${record.narrative_control_score >= 0.5 ? "bg-emerald" : "bg-orange"}`}
+                            style={{ width: `${Math.round(record.narrative_control_score * 100)}%` }}
+                          />
+                        </div>
+                        <span className="font-mono text-xs text-emerald">
+                          {Math.round(record.narrative_control_score * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      {statusLabel(record) === "verified" ? (
+                        <div className="flex items-center gap-1 text-emerald text-sm">
+                          <CheckCircle2 className="h-4 w-4" />
+                          <span>Verified</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 text-yellow-500 text-sm">
+                          <AlertCircle className="h-4 w-4" />
+                          <span>Flagged</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="col-span-2">
-                  {statusLabel(record) === "verified" ? (
-                    <div className="flex items-center gap-1 text-emerald text-sm">
-                      <CheckCircle2 className="h-4 w-4" />
-                      <span>Verified</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-1 text-yellow-500 text-sm">
-                      <AlertCircle className="h-4 w-4" />
-                      <span>Flagged</span>
-                    </div>
-                  )}
-                </div>
+                ))}
+                {records.length === 0 && (
+                  <div className="px-6 py-8 text-sm text-muted-foreground text-center">
+                    No benchmark records available yet.
+                  </div>
+                )}
               </div>
-            ))}
-            {records.length === 0 && (
-              <div className="px-6 py-8 text-sm text-muted-foreground text-center">
-                No benchmark records available yet.
-              </div>
-            )}
+            </div>
           </div>
 
           {/* Window Footer */}

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Github } from "lucide-react"
+import { Github, Menu, X } from "lucide-react"
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -16,6 +16,7 @@ const navItems = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -80,7 +81,44 @@ export function Header() {
             <span className="hidden sm:inline">GitHub</span>
           </a>
         </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden glass border-t border-border/50 px-6 py-4 space-y-1">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                pathname === item.href
+                  ? "text-cyan bg-cyan/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <a
+            href="https://github.com/Jaiminp007/Veritas"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+          >
+            <Github className="h-4 w-4" />
+            GitHub
+          </a>
+        </div>
+      )}
     </header>
   )
 }

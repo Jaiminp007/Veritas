@@ -56,7 +56,7 @@ const SAMPLE_QUERIES = [
 ]
 
 export function LivePlayground() {
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("Is the SBA 7(a) guarantee fee waived for all small businesses in 2025?")
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<PlaygroundResult | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -104,7 +104,7 @@ export function LivePlayground() {
   }
 
   return (
-    <section className="relative px-6 py-24">
+    <section className="relative px-6 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -124,24 +124,24 @@ export function LivePlayground() {
         </div>
 
         {/* Source Docs + Input Side-by-Side */}
-        <div className="flex gap-6 mb-2">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 mb-2">
 
-        {/* Source Documents - Left Side */}
-        <div className="hidden lg:flex flex-col w-56 shrink-0 glass rounded-2xl border border-border/50 p-4">
+        {/* Source Documents - Left on desktop, top horizontal scroll on mobile */}
+        <div className="flex flex-col glass rounded-2xl border border-border/50 p-4 lg:w-56 lg:shrink-0">
           <div className="flex items-center gap-2 mb-3">
             <FileText className="h-3.5 w-3.5 text-cyan" />
             <span className="font-mono text-[10px] font-semibold text-cyan uppercase tracking-wider">
               Sources
             </span>
           </div>
-          <div className="space-y-1.5">
+          <div className="flex lg:flex-col gap-2 lg:gap-1.5 overflow-x-auto lg:overflow-x-visible pb-1 lg:pb-0">
             {SOURCE_DOCS.map((doc) => (
               <a
                 key={doc.file}
                 href={`/docs/${doc.file}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-cyan hover:bg-cyan/5 transition-colors group"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-cyan hover:bg-cyan/5 transition-colors group whitespace-nowrap lg:whitespace-normal shrink-0 lg:shrink"
               >
                 <FileText className="h-3 w-3 shrink-0 opacity-60 group-hover:opacity-100" />
                 <span className="truncate">{doc.name}</span>
